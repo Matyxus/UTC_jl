@@ -1,0 +1,7 @@
+name = "UTC_jl"
+uuid = "c88d4bea-e06f-4a97-8a9c-49af459ad0b3"
+authors = ["svaldmat", "povolji2"]
+version = "1.0.0-DEV"
+
+[compat]
+julia = "1.9"
