@@ -7,7 +7,7 @@
   <h3 align="center">Urban Traffic Control (julia)</h3>
 
   <p align="center">
-  Semestral project of SPJ.
+  Semestral project of <a href="https://juliateachingctu.github.io/Scientific-Programming-in-Julia/dev/">SPJ</a>
   </p>
 </div>
 
