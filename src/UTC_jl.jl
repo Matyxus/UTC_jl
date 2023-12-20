@@ -1,5 +1,6 @@
 module UTC_jl
 
-print("permission test")
+include("constants.jl")
+include("network.jl")
 
 end
