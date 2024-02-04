@@ -1,10 +1,10 @@
-# -------------------- File System -------------------- 
+# ---------------------- File System ---------------------- 
 const SEP::String = Base.Filesystem.pathsep()
-# -------- Directories -------- 
+# ---------------------- Directories ---------------------- 
 const DATA_DIR::String = "data"
 const NETWORK_DIR::String = DATA_DIR * SEP * "networks"
 const ADDITIONAL_DIR::String = DATA_DIR * SEP * "additional"
-# --- Extensions --- 
+# ---------------------- Extensions ---------------------- 
 const NETWORK_EXT::String = ".net.xml"
 const EDGE_DATA_EXT::String = ".out.xml"
 # -------------------- File functions -------------------- 
@@ -32,9 +32,13 @@ end
 get_network_path(network_name::String)::String = (NETWORK_DIR * SEP * network_name * NETWORK_EXT)
 get_edge_data_path(file_name::String)::String = (ADDITIONAL_DIR * SEP * file_name * EDGE_DATA_EXT)
 
-# -------------------- Attributes -------------------- 
+# ---------------------- Attributes ---------------------- 
 const EDGE_ATTRIBUTES::Base.ImmutableDict{String, DataType} = Base.ImmutableDict("id" => String, "from" => String, "to" => String);
 const LANE_ATTRIBUTES::Base.ImmutableDict{String, DataType} = Base.ImmutableDict("id" => String, "length" => Float64, "shape" => String);
 const JUNCTION_ATTRIBUTES::Base.ImmutableDict{String, DataType} = Base.ImmutableDict("id" => String, "x" => Float64, "y" => Float64);
-
-
+# -------------------- Plot Attributes --------------------
+const BACKGROUND::String = "#111111"  # Dark (close to being black)
+const EDGE_COLOR::String = "#999999"  # grey
+const JUNCTION_COLOR::String = "white"
+const PLOT_SIZE::Tuple{Int64, Int64} = (1920, 1080)
+const FONT::String = "helvetica"
