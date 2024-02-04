@@ -33,9 +33,14 @@ get_network_path(network_name::String)::String = (NETWORK_DIR * SEP * network_na
 get_edge_data_path(file_name::String)::String = (ADDITIONAL_DIR * SEP * file_name * EDGE_DATA_EXT)
 
 # ---------------------- Attributes ---------------------- 
-const EDGE_ATTRIBUTES::Base.ImmutableDict{String, DataType} = Base.ImmutableDict("id" => String, "from" => String, "to" => String);
-const LANE_ATTRIBUTES::Base.ImmutableDict{String, DataType} = Base.ImmutableDict("id" => String, "length" => Float64, "shape" => String);
-const JUNCTION_ATTRIBUTES::Base.ImmutableDict{String, DataType} = Base.ImmutableDict("id" => String, "x" => Float64, "y" => Float64);
+const EDGE_ATTRIBUTES::Base.ImmutableDict{String, DataType} = Base.ImmutableDict("id" => String, "from" => String, "to" => String)
+const LANE_ATTRIBUTES::Base.ImmutableDict{String, DataType} = Base.ImmutableDict("id" => String, "length" => Float64, "shape" => String)
+const JUNCTION_ATTRIBUTES::Base.ImmutableDict{String, DataType} = Base.ImmutableDict("id" => String, "x" => Float64, "y" => Float64)
+const CLUSTERING_ATTRIBUTES::Base.ImmutableDict{String, DataType} = Base.ImmutableDict("iterations" => Int64, "plot_every" => Int64, "merging_radius" => Float64)
+
+# ---------------------- Clustering ---------------------- 
+const CLUSTERING_DEFAULT::Base.ImmutableDict{String, <:Real} = Base.ImmutableDict("iterations" => 100, "plot_every" => 0, "merging_radius" => 15)
+
 # -------------------- Plot Attributes --------------------
 const BACKGROUND::String = "#111111"  # Dark (close to being black)
 const EDGE_COLOR::String = "#999999"  # grey
