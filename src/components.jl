@@ -37,8 +37,7 @@ struct Edge
                     return nothing
                 end
             end
-            # Check shape (must be vector of x, y pairs of type Float64)
-            # shape="4586.27,1204.79 4594.12,1196.77 4613.43,1177.00 4619.13,1171.54 4625.34,1165.61 4635.97,1155.47 4650.31,1141.76 4652.49,1139.60 4669.22,1122.99 4681.59,1109.67"
+            # Check shape (must be vector of [x, y] pairs of type Float64)
             shape::Vector{Tuple{Float64, Float64}} = []
             coordinates::Vector{String} = split(lane["shape"])
             if length(coordinates) <= 1
@@ -58,6 +57,8 @@ struct Edge
         return new(edge["id"], internal_id, edge["from"], edge["to"], parse(Float64, children(edge)[1]["length"]), lane_shapes)
     end
 end
+
+# -------- Junction -------- 
 
 struct Junction
     id::String
@@ -83,6 +84,7 @@ struct Junction
         return new(junction["id"], internal_id, parse(Float64, junction["x"]), parse(Float64, junction["y"]))
     end
 end
+
 # ------- Utils ------- 
 is_valid(component::Node, ::Type{Edge}) = tag(component) == "edge" && !is_internal(component, Edge)
 is_valid(component::Node, ::Type{Junction}) = tag(component) == "junction" && !is_internal(component, Junction)
@@ -90,6 +92,4 @@ is_internal(edge::Node, ::Type{Edge})::Bool = haskey(edge, "function")
 is_internal(junction::Node, ::Type{Junction})::Bool = (haskey(junction, "type") && junction["type"] == "internal")
 Base.convert(::Type{Edge}, vals::Tuple{Node, Int64}) = Edge(vals...)
 Base.convert(::Type{Junction}, vals::Tuple{Node, Int64}) = Junction(vals...)
-
-
 
