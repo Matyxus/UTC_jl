@@ -5,8 +5,7 @@ include("constants.jl")
 include("components.jl")
 include("network.jl")
 # Clustering
-include("clustering.jl")
-
+include("grav_clustering.jl")
 
 end
 
