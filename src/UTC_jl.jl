@@ -10,7 +10,11 @@ include("clustering.jl")
 include("display.jl")
 
 network = load_network("DCC")
-plot_network(network)
+
+c = cgrad(:Reds)
+r = rand(network.edges_size)
+
+plot_network(network, edge_color=c[r])
 
 end
 
