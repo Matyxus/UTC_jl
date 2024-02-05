@@ -45,5 +45,6 @@ const CLUSTERING_DEFAULT::Base.ImmutableDict{String, <:Real} = Base.ImmutableDic
 const BACKGROUND::String = "#111111"  # Dark (close to being black)
 const EDGE_COLOR::String = "#999999"  # grey
 const JUNCTION_COLOR::String = "white"
+const JUNCTION_SIZE::Int64 = 3
 const PLOT_SIZE::Tuple{Int64, Int64} = (1920, 1080)
 const FONT::String = "helvetica"

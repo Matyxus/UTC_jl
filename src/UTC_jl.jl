@@ -17,6 +17,3 @@ r = rand(network.edges_size)
 plot_network(network, edge_color=c[r])
 
 end
-
-
-
