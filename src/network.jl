@@ -11,7 +11,12 @@ struct Network
     junctions::Vector{Junction}
     junction_map::Dict{String, Int64} # Mapping of internal id to original
 
-    function Network(name::String, junctions::Vector{Junction}, edges::Vector{Edge})
+    function Network(name::String, junctions::Vector{Junction}, edges::Vector{Edge})::Union{Nothing, Network}
+        # Check if edges or junctins are empty
+        if length(junctions) == 0 || length(edges) == 0
+            println("Got empty vector of junctions or edges !")
+            return nothing
+        end
         # Check that all junctions referenced in edges exist
         junction_map::Dict{String, Int64} = Dict(junction.id => junction.internal_id for junction in junctions)
         for edge in edges 
@@ -31,7 +36,6 @@ struct Network
         )
     end
 end
-
 
 
 function load_network(network_name::String)::Union{Network, Nothing}
@@ -69,5 +73,11 @@ function load_network(network_name::String)::Union{Network, Nothing}
     return Network(network_name, junctions, edges)
 end
 
-
+function get_centroids(network::Network, ::Type{T})::Matrix{T} where {T <: AbstractFloat}
+    positions::Matrix{T} = zeros(network.edges_size, 2)
+    for edge in network.edges 
+        positions[edge.internal_id, :] .= get_centroid(edge)
+    end
+    return positions
+end
 
