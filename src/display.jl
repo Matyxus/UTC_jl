@@ -1,12 +1,6 @@
 using RecipesBase
 using Plots
 
-@recipe function plot_junctions_recipe(junctions::Vector{Junction})
-    seriestype --> :scatter
-    markeralpha --> 0.5
-    map(junction->junction.x, junctions), map(junction->junction.y, junctions)
-end
-
 @recipe function plot_edges_recipe(edges::Vector{Edge}, color::Union{RGBA{Float64}, String})
     legend --> false
     linecolor --> color
@@ -49,6 +43,12 @@ end
     xs, ys
 end
 
+@recipe function plot_junctions_recipe(junctions::Vector{Junction})
+    seriestype --> :scatter
+    markeralpha --> 0.5
+    map(junction->junction.x, junctions), map(junction->junction.y, junctions)
+end
+
 check_vector_size_one(non_vec::Union{RGBA{Float64}, String, Int64}) = non_vec
 check_vector_size_one(vec::Union{Vector{RGBA{Float64}}, Vector{String}, Vector{Int64}}) = length(vec) == 1 ? vec[1] : vec
 
@@ -84,21 +84,43 @@ function plot_junctions(
     return true
 end
 
+function save_plot(save_path::String="")
+    save_path = strip(save_path)
+    if !isempty(save_path) && save_path[end] != SEP
+        save_path *= SEP
+    end
+    Plots.savefig(save_path * network.name * ".svg")
+end
+
 function plot_network(
-        network::Network; save::Bool=false, save_path::String="", plot_title::String=network.name, 
-        junction_color::Union{Vector{String}, String}=JUNCTION_COLOR, 
-        edge_color::Union{Vector{RGBA{Float64}}, Vector{String}, RGBA{Float64}, String}=EDGE_COLOR, background::String=BACKGROUND
+        network::Network; junction_color::Union{Vector{String}, String}=JUNCTION_COLOR, 
+        junction_size::Union{Vector{Int64}, Int64}=JUNCTION_SIZE, 
+        edge_color::Union{Vector{RGBA{Float64}}, Vector{String}, RGBA{Float64}, String}=EDGE_COLOR, 
+        save::Bool=false, save_path::String="", plot_title::String=network.name, background::String=BACKGROUND
     )
     plot = Plots.plot(background=background, size=PLOT_SIZE, fontfamily=FONT, plot_title=plot_title)
     plot_edges(network.edges, network.edges_size, edge_color=edge_color)
-    plot_junctions(network.junctions, network.junctions_size, junction_color=junction_color)
+    plot_junctions(network.junctions, network.junctions_size, junction_color=junction_color, junction_size=junction_size)
     display(plot)
     if save
-        save_path = strip(save_path)
-        if !isempty(save_path) && save_path[end] != SEP
-            save_path *= SEP
-        end
-        Plots.savefig(save_path * network.name * ".svg")
+        save_plot(save_path)
     end
     return
+end
+
+function plot_points(
+        coordinates::Matrix{<: AbstractFloat}, sizes::Vector{<: Real}; color::String=JUNCTION_COLOR,
+        save::Bool=false, save_path::String="", plot_title::String="", background::String=BACKGROUND
+    )::Bool
+    if size(coordinates)[1] != length(sizes) || size(coordinates)[2] != 2
+        println("Size of coordinates: $(size(coordinates)), must be (n, 2), where n is length of sizes: $(length(sizes))")
+        return false
+    end
+    plot = Plots.plot(background=background, size=PLOT_SIZE, fontfamily=FONT, plot_title=plot_title)
+    Plots.scatter!(coordinates[:, 1], coordinates[:, 2], ms=sizes, mc=color)
+    display(plot)
+    if save
+        save_plot(save_path)
+    end
+    return true
 end
