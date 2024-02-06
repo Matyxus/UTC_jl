@@ -1,5 +1,5 @@
 
-struct GravClustering{T <: AbstractFloat}
+mutable struct GravClustering{T <: AbstractFloat}
     positions::Matrix{T} # Matrix of positions
     weights::Vector{T} # Weights of objects
     precision::Type{T} # Precision of float numbers

@@ -17,7 +17,7 @@ function clustering_test()
     @assert(check_params(clustering))
     println(clustering.precision)
     solver::BruteForce = BruteForce(clustering)
-    movements(clustering, solver)
+    step(clustering, solver)
     return
 end
 
@@ -31,5 +31,7 @@ function display_test()
     plot_points(mat, sizes)
     return
 end
+
+clustering_test()
 
 end
