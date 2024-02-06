@@ -28,7 +28,7 @@ struct Network
                 return nothing
             end
         end
-        println("Successfully loaded road network: $(name)")
+        println("Successfully loaded road network: '$(name)'")
         return new( 
             name, length(edges), edges, 
             Dict(edge.id => edge.internal_id for edge in edges), 
@@ -77,6 +77,12 @@ function get_centroids(network::Network, ::Type{T})::Matrix{T} where {T <: Abstr
     positions::Matrix{T} = zeros(network.edges_size, 2)
     for edge in network.edges 
         positions[edge.internal_id, :] .= get_centroid(edge)
+    end
+    # Detect duplicates (network can be badly constructed)
+    correct::Vector{Int64} = unique(i -> positions[i, :], axes(positions, 1))
+    if length(correct) != size(positions, 1)
+        println("Warning, detected: $(size(positions)[1] - length(correct)) duplicate coordinates, correcting ...")
+
     end
     return positions
 end

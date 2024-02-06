@@ -2,7 +2,7 @@
 struct GravClustering{T <: AbstractFloat}
     positions::Matrix{T} # Matrix of positions
     weights::Vector{T} # Weights of objects
-    precision::DataType # Precision of float numbers
+    precision::Type{T} # Precision of float numbers
     params::Dict # Params of clustering
     # Constructors
     GravClustering(size::Int64) = new{Float64}(zeros(Float64, size, 2), zeros(Float64, size), Float64, CLUSTERING_DEFAULT)
@@ -14,10 +14,10 @@ end
 function check_params(gc::GravClustering)::Bool
     # Check params
     for (key, type) in CLUSTERING_ATTRIBUTES
-        if !haskey(junction, gc.params)
+        if !haskey(gc.params, key)
             println("GravClustering is missing key: $(key) !")
             return false
-        elseif type != String && !isa(type, gc.params[key])
+        elseif type != String && !isa(gc.params[key], type)
             println("Parameter: $(key) is expected to be of type: $(type), got: $(gc.params[key]) !")
             return false
         end
@@ -28,6 +28,10 @@ function check_params(gc::GravClustering)::Bool
             println("Parameter: $(param) bust be greater than 0, got: $(gc.params[param])")
             return false
         end
+    end
+    if !allunique(eachrow(gc.positions))
+        println("Dectected duplicates among coordinates of points!")
+        return false
     end
     return true
 end
@@ -53,7 +57,7 @@ end
 
 
 function load_intervals(edge_data::String, interval::Tuple{Real, Real})::Union{Nothing, Vector{Node}}
-    println("Loading edge data from: $(edge_data), interval: $(interval) ...")
+    println("Loading edge data from: '$(edge_data)', interval: $(interval) ...")
     edge_data_path::String = get_edge_data_path(edge_data)
     if !file_exists(edge_data_path)
         return nothing
@@ -71,9 +75,6 @@ function load_intervals(edge_data::String, interval::Tuple{Real, Real})::Union{N
     return intervals
 end
 
-step(::GravClustering) = throw(ErrorException("Error, function 'step' for GravClustering is not implemented!"))
-movements(::GravClustering) = throw(ErrorException("Error, function 'movements' for GravClustering is not implemented!"))
-clusterize(::GravClustering) = throw(ErrorException("Error, function 'clusterize' for GravClustering is not implemented!"))
 
 
 

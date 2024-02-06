@@ -38,7 +38,7 @@ const LANE_ATTRIBUTES::Base.ImmutableDict{String, DataType} = Base.ImmutableDict
 const JUNCTION_ATTRIBUTES::Base.ImmutableDict{String, DataType} = Base.ImmutableDict("id" => String, "x" => Float64, "y" => Float64)
 const CLUSTERING_ATTRIBUTES::Base.ImmutableDict{String, DataType} = Base.ImmutableDict(
     "iterations" => Int64, "plot_every" => Int64, 
-    "merging_radius" => Float64, "multiplier" => Float64
+    "merging_radius" => Real, "multiplier" => Real
 )
 
 
