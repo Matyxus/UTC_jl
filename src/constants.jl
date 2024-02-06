@@ -36,10 +36,13 @@ get_edge_data_path(file_name::String)::String = (ADDITIONAL_DIR * SEP * file_nam
 const EDGE_ATTRIBUTES::Base.ImmutableDict{String, DataType} = Base.ImmutableDict("id" => String, "from" => String, "to" => String)
 const LANE_ATTRIBUTES::Base.ImmutableDict{String, DataType} = Base.ImmutableDict("id" => String, "length" => Float64, "shape" => String)
 const JUNCTION_ATTRIBUTES::Base.ImmutableDict{String, DataType} = Base.ImmutableDict("id" => String, "x" => Float64, "y" => Float64)
-const CLUSTERING_ATTRIBUTES::Base.ImmutableDict{String, DataType} = Base.ImmutableDict("iterations" => Int64, "plot_every" => Int64, "merging_radius" => Float64)
+const CLUSTERING_ATTRIBUTES::Base.ImmutableDict{String, DataType} = Base.ImmutableDict(
+    "iterations" => Int64, "plot_every" => Int64, 
+    "merging_radius" => Real, "multiplier" => Real
+)
 
 # ---------------------- Clustering ---------------------- 
-const CLUSTERING_DEFAULT::Base.ImmutableDict{String, <:Real} = Base.ImmutableDict("iterations" => 100, "plot_every" => 0, "merging_radius" => 15)
+const CLUSTERING_DEFAULT::Base.ImmutableDict{String, <:Real} = Base.ImmutableDict("iterations" => 100, "plot_every" => 0, "merging_radius" => 15, "multiplier" => 25)
 
 # -------------------- Plot Attributes --------------------
 const BACKGROUND::String = "#111111"  # Dark (close to being black)

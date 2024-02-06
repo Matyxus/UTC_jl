@@ -58,6 +58,20 @@ struct Edge
     end
 end
 
+function get_centroid(edge::Edge)::Tuple{Float64, Float64}
+    x_sum::Float64 = 0
+    y_sum::Float64 = 0
+    divider::Int64 = 0
+    for lane_shape in edge.lane_shapes 
+        for (x, y) in lane_shape 
+            x_sum += x
+            y_sum += y
+        end
+        divider += length(lane_shape)
+    end
+    return (x_sum / divider), (y_sum / divider)
+end
+
 # -------- Junction -------- 
 
 struct Junction
