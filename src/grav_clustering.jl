@@ -52,6 +52,10 @@ function load_data(network::String, edge_data::String, interval::Tuple{Real, Rea
             weights[i] += parse(precision, xml_edge["congestionIndex"])
         end
     end
+    # Compute average values
+    if length(intervals) != 1
+        weights ./= length(intervals)
+    end
     return GravClustering(get_centroids(graph, precision), weights, (isnothing(params) || isempty(params)) ? CLUSTERING_DEFAULT : params)
 end
 
@@ -65,10 +69,10 @@ function load_intervals(edge_data::String, interval::Tuple{Real, Real})::Union{N
     doc::Node = xml_read(edge_data_path, Node)
     root::Node = doc[end] # doc[2], doc[1] is xml declaration
     intervals::Vector{Node} = []
-    for xml_interval in children(root) 
-        if parse(Float64, xml_interval["begin"]) > interval[2]
+    for xml_interval in children(root)
+        if parse(Float64, xml_interval["end"]) > interval[2]
             break
-        elseif parse(Float64, xml_interval["begin"]) >= interval[1]
+        elseif interval[1] <= parse(Float64, xml_interval["begin"]) && interval[2] >= parse(Float64, xml_interval["end"])
             push!(intervals, xml_interval)
         end
     end
