@@ -214,12 +214,12 @@ end
 `Returns` Nothing
 """
 function plot_clusters(
-        network::Network, clusters::Vector{Vector{Int64}}, cluster_min_size::Int64; 
+        network::Network, clusters::Vector{Vector{Integer}}, cluster_min_size::Int64; 
         junction_color::String=JUNCTION_COLOR, junction_size::Int64=JUNCTION_SIZE, 
         save::Bool=false, save_path::String="", plot_title::String=network.name, background::String=BACKGROUND
     )
     edge_color::Vector{RGBA{Float64}} = fill(cgrad(:grays)[0.1], network.edges_size)
-    c = cgrad(:default)
+    c = cgrad(:hsv)
     chosen_clusters::Vector{Vector{Int64}} = []
     for cluster in clusters
         if length(cluster) >= cluster_min_size

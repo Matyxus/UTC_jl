@@ -149,6 +149,8 @@ Second one for visualization of congestion indexes (extracted by SUMO in statist
 
 Finally the visualization of clustering (which can be shown as points, or as clusters):
 ![Points](images/points_dcc.svg)
+![Clusters](images/clusters.svg)
+** Clusters of edges visualized after 40 iterations.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
