@@ -265,5 +265,26 @@ function clusterize(gc::GravClustering, solver::Improved)::Nothing
     return
 end
 
-
+function get_clusters(solver::Improved)::Vector{Vector{Integer}} 
+    println("Extracting clusters from Improved solver!")
+    clusters::Vector{Vector{Integer}} = []
+    # We need to accumulate all clusters, as we only have indexes
+    cluster_mapping::Dict{Int32, Int32} = Dict{Int32, Int32}()
+    counter::Int32 = 1
+    first_index::Int32 = 0
+    for index in eachindex(solver.clusters)
+        first_index = index
+        while solver.clusters[index] != index
+            index = solver.clusters[index]
+        end
+        if haskey(cluster_mapping, index)
+            push!(clusters[cluster_mapping[index]], first_index)
+        else
+            push!(clusters, [first_index])
+            cluster_mapping[index] = counter
+            counter += 1
+        end
+    end
+    return clusters
+end
 

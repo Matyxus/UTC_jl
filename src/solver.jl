@@ -69,4 +69,15 @@ end
 
 
 
+"""
+    get_clusters(<: Solver)::Vector{Vector{Integer}}
+
+    Generates lists of all clusters.
+
+# Arguments
+- `solver::T`: algorithm that performs clustering
+
+`Returns` Vector of clusters of edge internal indexes.
+"""
+get_clusters(::T) where {T <: Solver} = throw(ErrorException("Error, function 'get_clusters' for Solver is not implemented!"))
 

@@ -13,7 +13,7 @@ include("methods/brute_force_cuda.jl")
 include("methods/improved.jl")
 
 # Functions
-export load_data, load_network, check_params, movements, plot_network, plot_points, run_clustering
+export load_data, load_network, check_params, movements, plot_network, plot_points, run_clustering, get_clusters
 # Structures
 export GravClustering, BruteForce, BruteForceCuda, Improved 
 
@@ -33,7 +33,7 @@ function clustering_test()
     gc.weights .*= gc.params["multiplier"]
     @assert(check_params(gc))
     solver::Improved = Improved(gc)
-    run_clustering(gc, solver; iterations=50)
+    run_clustering(gc, solver; iterations=10)
     
 end
 
