@@ -1,5 +1,19 @@
 import XML: Node, children, tag, attributes
 
+"""
+    struct Edge
+
+    Structure representing an Edge in road network (containts individual lanes),
+    extracted from the network file.
+
+# Attributes
+- `id::String`: original id of the Edge
+- `internal_id::Int64`: internal id, used for indexing
+- `from::String`: the intial junction id of this edge
+- `to::String`: the destination junction id of this edge
+- `length::Float64`: total length of edge
+- `lane_shapes::Vector{Vector{Tuple{Float64, Float64}}}`: shapes of lanes, defined as vectors of coordinates
+"""
 struct Edge
     id::String
     internal_id::Int64
@@ -58,6 +72,16 @@ struct Edge
     end
 end
 
+"""
+    function get_centroid(edge::Edge)::Tuple{Float64, Float64}
+
+    Returns the center of mass of and edge.
+
+# Arguments
+- `edge::Edge`: the target edge
+
+`Returns` Pair of coordinates defined as center of mass (computed by all lane shapes of Edge).
+"""
 function get_centroid(edge::Edge)::Tuple{Float64, Float64}
     x_sum::Float64 = 0
     y_sum::Float64 = 0
@@ -75,6 +99,19 @@ end
 
 # -------- Junction -------- 
 
+"""
+    struct Junction
+
+    Structure representing an Junction in road network, extracted from the network file.
+
+# Attributes
+- `id::String`: the original id of junction
+- `internal_id::Int64`: internal id of junction used for indexing
+- `x::Float64`: x coordinate of junction
+- `y::Float64`: y coordinate of junction
+
+`Returns` Pair of coordinates defined as center of mass (computed by all lane shapes of Edge).
+"""
 struct Junction
     id::String
     internal_id::Int64
