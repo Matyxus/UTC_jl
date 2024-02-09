@@ -24,17 +24,19 @@ function fill_diagonal_one(matrix::CuArray)
 end
 
 function movements(gc::GravClustering, ::BruteForceCuda)::Nothing
-    println("Calculating movements of clusters by BruteForce")
-    # ------------------ Calculate movement of points based on grav. attraction ------------------
-    positions::CuArray = gc.positions |> cu
-    weights::CuArray = gc.weights |> cu
+    if CUDA.functional()
+        println("Calculating movements of clusters by BruteForce")
+        # ------------------ Calculate movement of points based on grav. attraction ------------------
+        positions::CuArray = gc.positions |> cu
+        weights::CuArray = gc.weights |> cu
 
-    transpos::CuArray = positions'
-    diff::CuArray = transpos .- reshape(transpos, (size(transpos, 1), 1, size(transpos, 2)))
-    distances::CuArray = dropdims(sum(diff .^ 2, dims=1), dims=1)
-    fill_diagonal_one(distances)
-    attraction::CuArray = weights ./ distances
-    movements::CuArray = transpose(dropdims(sum(diff .* reshape(attraction, (1, size(attraction, 1), size(attraction, 2))), dims=2), dims=2))
-    gc.positions = positions .+ movements
+        transpos::CuArray = positions'
+        diff::CuArray = transpos .- reshape(transpos, (size(transpos, 1), 1, size(transpos, 2)))
+        distances::CuArray = dropdims(sum(diff .^ 2, dims=1), dims=1)
+        fill_diagonal_one(distances)
+        attraction::CuArray = weights ./ distances
+        movements::CuArray = transpose(dropdims(sum(diff .* reshape(attraction, (1, size(attraction, 1), size(attraction, 2))), dims=2), dims=2))
+        gc.positions = positions .+ movements
+    end
     return
 end
