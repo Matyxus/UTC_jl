@@ -12,7 +12,7 @@ include("methods/improved.jl")
 # Display
 include("display.jl")
 # Functions
-export load_data, check_params, movements, movements2, movements3
+export load_data, check_params, movements
 # Structures
 export GravClustering, BruteForce, BruteForceCuda 
 
