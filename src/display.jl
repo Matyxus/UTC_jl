@@ -117,7 +117,7 @@ function plot_points(
         return false
     end
     plot = Plots.plot(background=background, size=PLOT_SIZE, fontfamily=FONT, plot_title=plot_title)
-    Plots.scatter!(plot, coordinates[:, 1], coordinates[:, 2], ms=(sizes ./ 25), mc=color)
+    Plots.scatter!(coordinates[:, 1], coordinates[:, 2], ms=(sizes ./ 25), mc=color)
     display(plot)
     if save
         save_plot(save_path)
