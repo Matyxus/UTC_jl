@@ -66,23 +66,4 @@ function movements_test()
     return
 end
 
-function movements_test2()
-    gc::GravClustering = load_data("lust", "edgedata_lust", (25200, 32400), Float64)
-    gc.weights .+= 0.001
-    gc.weights .*= gc.params["multiplier"]
-    @assert(check_params(gc))
-    solver::BruteForce = BruteForce(gc)
-    tmp::Improved = Improved(gc)
-    println("Running benchmark on movements1 function")
-    result = movements(gc, solver) 
-    println("Running benchmark on movements2 function")
-    println(all(movements2(gc, solver) .== result))
-    println("Running benchmark on movements3 function")
-    println(all(movements3(gc, solver) .== result))
-    println("Running benchmark on movements4 function, num threads")
-    println(all(movements(gc, tmp) .== result))
-    return
-end
-
-
-
+movements_test()
