@@ -20,7 +20,7 @@ function movements(gc::GravClustering, ::BruteForce)::Matrix
         distances::Vector{gc.precision} = vec(sum(((gc.positions .- transpose(gc.positions[i, :])) .^ 2), dims=2))
         distances[i] = 1.0
         @assert(!(gc.precision(0) in distances))
-        attraction::Vector{gc.precision} = (gc.weights ./ distances)
+        attraction::Vector{gc.precision} = gc.weights ./ distances
         movements[i, :] = round.(vec(sum(((gc.positions .- transpose(gc.positions[i, :])) .* attraction), dims=1)); digits=5)
     end
     return movements
