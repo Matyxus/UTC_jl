@@ -93,9 +93,12 @@ first one being the plotting of networks in the SUMO format:
 ![Road network Image](images/dcc.svg)
 
 Second one for visualization of congestion indexes (extracted by SUMO in statistical files):
+![Heatmap](images/heatmap_dcc.svg)
+** The more red the edge is, the more congestion was observed there.
 
 
 Finally the visualization of clustering (which can be shown as points, or as clusters):
+![Points](images/points_dcc.svg)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
