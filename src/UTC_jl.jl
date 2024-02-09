@@ -28,13 +28,15 @@ end
 
 function display_test()
     network = load_network("DCC")
-    c = cgrad(:Reds)
-    r = rand(network.edges_size)
-    plot_network(network, edge_color=c[r])
-    mat = 10 * rand(100, 2)
-    sizes = 20 * rand(100) .+ 3
-    plot_points(mat, sizes)
+    # c = cgrad(:Reds)
+    # r = rand(network.edges_size)
+    plot_network(network)
+    # mat = 10 * rand(100, 2)
+    # sizes = 20 * rand(100) .+ 3
+    # plot_points(mat, sizes)
     return
 end
+
+display_test()
 
 end

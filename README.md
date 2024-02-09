@@ -87,7 +87,7 @@ The main feature of this work is the "gravitational" clustering algorithm. The g
 ### Visualization
 There are multiple visualization methods provided for this work, 
 first one being the plotting of networks in the SUMO format:
-
+![Road network Image](images/dcc.svg)
 
 Second one for visualization of congestion indexes (extracted by SUMO in statistical files):
 
