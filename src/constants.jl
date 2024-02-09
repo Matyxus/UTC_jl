@@ -31,8 +31,8 @@ end
 
 # Functions returning full path to file (from its name) corresponding to type
 check_test_pwd()::String = basename(pwd()) == "test" ? PARENT_DIR : ""
-get_network_path(network_name::String)::String = (PARENT_DIR * NETWORK_DIR * SEP * network_name * NETWORK_EXT)
-get_edge_data_path(file_name::String)::String = (PARENT_DIR * ADDITIONAL_DIR * SEP * file_name * EDGE_DATA_EXT)
+get_network_path(network_name::String)::String = (check_test_pwd() * NETWORK_DIR * SEP * network_name * NETWORK_EXT)
+get_edge_data_path(file_name::String)::String = (check_test_pwd() * ADDITIONAL_DIR * SEP * file_name * EDGE_DATA_EXT)
 
 # ---------------------- Attributes ---------------------- 
 const EDGE_ATTRIBUTES::Base.ImmutableDict{String, DataType} = Base.ImmutableDict("id" => String, "from" => String, "to" => String)
