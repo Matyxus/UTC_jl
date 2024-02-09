@@ -7,9 +7,24 @@ include("network.jl")
 include("grav_clustering.jl")
 include("solver.jl")
 include("methods/brute_force.jl")
+include("methods/brute_force_cuda.jl")
 include("methods/improved.jl")
 # Display
 include("display.jl")
+# Functions
+export load_data, check_params, movements
+# Structures
+export GravClustering, BruteForce, BruteForceCuda 
+
+function cuda_test()
+    clustering::GravClustering = load_data("lust", "edgedata_lust", (0, 3600), Float32)
+    clustering.weights .*= clustering.params["multiplier"]
+    @assert(check_params(clustering))
+    println(clustering.precision)
+    solver::BruteForceCuda = BruteForceCuda(clustering)
+    step(clustering, solver)
+    return
+end
 
 function display_test()
     network = load_network("DCC")
@@ -21,8 +36,5 @@ function display_test()
     plot_points(mat, sizes)
     return
 end
-
-
-export GravClustering, load_data, BruteForce, movements
 
 end

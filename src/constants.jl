@@ -1,6 +1,7 @@
 # ---------------------- File System ---------------------- 
 const SEP::String = Base.Filesystem.pathsep()
 # ---------------------- Directories ---------------------- 
+const PARENT_DIR::String = ".." * SEP
 const DATA_DIR::String = "data"
 const NETWORK_DIR::String = DATA_DIR * SEP * "networks"
 const ADDITIONAL_DIR::String = DATA_DIR * SEP * "additional"
@@ -29,8 +30,9 @@ function file_exists(file_path::String; messagge::Bool = true)::Bool
 end
 
 # Functions returning full path to file (from its name) corresponding to type
-get_network_path(network_name::String)::String = (NETWORK_DIR * SEP * network_name * NETWORK_EXT)
-get_edge_data_path(file_name::String)::String = (ADDITIONAL_DIR * SEP * file_name * EDGE_DATA_EXT)
+check_test_pwd()::String = basename(pwd()) == "test" ? PARENT_DIR : ""
+get_network_path(network_name::String)::String = (PARENT_DIR * NETWORK_DIR * SEP * network_name * NETWORK_EXT)
+get_edge_data_path(file_name::String)::String = (PARENT_DIR * ADDITIONAL_DIR * SEP * file_name * EDGE_DATA_EXT)
 
 # ---------------------- Attributes ---------------------- 
 const EDGE_ATTRIBUTES::Base.ImmutableDict{String, DataType} = Base.ImmutableDict("id" => String, "from" => String, "to" => String)

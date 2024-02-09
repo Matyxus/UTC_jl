@@ -55,6 +55,18 @@ check_vector_size_one(vec::Union{Vector{RGBA{Float64}}, Vector{String}, Vector{I
 check_argument(::Union{RGBA{Float64}, String, Int64}, ::Int64)::Bool = false
 check_argument(vec::Union{Vector{RGBA{Float64}}, Vector{String}, Vector{Int64}}, size::Int64)::Bool = length(vec) != size
 
+"""
+    function plot_edges(edges::Vector{Edge}, edges_size::Int64; edge_color::Union{Vector{RGBA{Float64}}, Vector{String}, RGBA{Float64}, String}=EDGE_COLOR)::Bool
+
+    Plots given edges with some options.
+
+# Arguments
+- `edges::Vector{Edge}`: edges to be plotted, expected vector length: `n`
+- `edges_size::Int64`: size of `edges`, expected value: `n`
+- `edge_color::Union{Vector{RGBA{Float64}}, Vector{String}, RGBA{Float64}, String}`: colors of plotted edges, expected vector length: `n`, `optional`
+
+`Returns` True if sizes of arguments are correct, else False
+"""
 function plot_edges(
         edges::Vector{Edge}, edges_size::Int64; edge_color::Union{Vector{RGBA{Float64}}, Vector{String}, RGBA{Float64}, String}=EDGE_COLOR
     )::Bool
@@ -67,6 +79,19 @@ function plot_edges(
     return true
 end
 
+"""
+    function plot_junctions(junctions::Vector{Junction}, junctions_count::Int64; junction_color::Union{Vector{String}, String}=JUNCTION_COLOR, junction_size::Union{Vector{Int64}, Int64}=JUNCTION_SIZE)::Bool
+
+    Plots given junctions with some options.
+
+# Arguments
+- `junctions::Vector{Junction}`: junctions to be plotted, expected vector length: `n`
+- `junctions_count::Int64`: size of `junctions`, expected value: `n`
+- `junction_color::Union{Vector{String}, String}`: colors of plotted junctions, expected vector length: `n`, `optional`
+- `junction_size::Union{Vector{Int64}, Int64}`: sizes of plotted junctions, expected vector length: `n`, `optional`
+
+`Returns` True if sizes of arguments are correct, else False
+"""
 function plot_junctions(
         junctions::Vector{Junction}, junctions_count::Int64; junction_color::Union{Vector{String}, String}=JUNCTION_COLOR, 
         junction_size::Union{Vector{Int64}, Int64}=JUNCTION_SIZE
@@ -84,14 +109,42 @@ function plot_junctions(
     return true
 end
 
+"""
+    function save_plot(save_path::String="")
+
+    Saves plot.
+
+# Arguments
+- `save_path::String`: location of saved plot, `optional`
+
+`Returns` Nothing
+"""
 function save_plot(save_path::String="")
     save_path = strip(save_path)
     if !isempty(save_path) && save_path[end] != SEP
         save_path *= SEP
     end
     Plots.savefig(save_path * network.name * ".svg")
+    return
 end
 
+"""
+    function plot_network(network::Network; junction_color::Union{Vector{String}, String}=JUNCTION_COLOR, junction_size::Union{Vector{Int64}, Int64}=JUNCTION_SIZE, edge_color::Union{Vector{RGBA{Float64}}, Vector{String}, RGBA{Float64}, String}=EDGE_COLOR, save::Bool=false, save_path::String="", plot_title::String=network.name, background::String=BACKGROUND)
+
+    Plots given network with some options.
+
+# Arguments
+- `network::Network`: network to be plotted
+- `junction_color::Union{Vector{String}, String}`: colors of plotted junctions, expected vector length: `n`, `optional`
+- `junction_size::Union{Vector{Int64}, Int64}`: sizes of plotted junctions, expected vector length: `n`, `optional`
+- `edge_color::Union{Vector{RGBA{Float64}}, Vector{String}, RGBA{Float64}, String}`: colors of plotted edges, expected vector length: `n`, `optional`
+- `save::Bool`: save plot, `optional`
+- `save_path::String`: location of saved plot, `optional`
+- `plot_title::String`: title of plot, `optional`
+- `background::String`: background color of plot, `optional`
+
+`Returns` Nothing
+"""
 function plot_network(
         network::Network; junction_color::Union{Vector{String}, String}=JUNCTION_COLOR, 
         junction_size::Union{Vector{Int64}, Int64}=JUNCTION_SIZE, 
@@ -108,6 +161,22 @@ function plot_network(
     return
 end
 
+"""
+    function plot_points(coordinates::Matrix{<: AbstractFloat}, sizes::Vector{<: Real}; color::String=JUNCTION_COLOR, save::Bool=false, save_path::String="", plot_title::String="", background::String=BACKGROUND)::Bool
+
+    Plots given points with some options.
+
+# Arguments
+- `coordinates::Matrix{<: AbstractFloat}`: points to be plotted, expected size: `(n, 2)`
+- `sizes::Vector{<: Real}`: sizes of plotted points, expected length: `n`
+- `color::String`: color of plotted points, `optional`
+- `save::Bool`: save plot, `optional`
+- `save_path::String`: location of saved plot, `optional`
+- `plot_title::String`: title of plot, `optional`
+- `background::String`: background color of plot, `optional`
+
+`Returns` True if sizes of arguments are correct, else False
+"""
 function plot_points(
         coordinates::Matrix{<: AbstractFloat}, sizes::Vector{<: Real}; color::String=JUNCTION_COLOR,
         save::Bool=false, save_path::String="", plot_title::String="", background::String=BACKGROUND
@@ -117,7 +186,7 @@ function plot_points(
         return false
     end
     plot = Plots.plot(background=background, size=PLOT_SIZE, fontfamily=FONT, plot_title=plot_title)
-    Plots.scatter!(plot, coordinates[:, 1], coordinates[:, 2], ms=(sizes ./ 25), mc=color)
+    Plots.scatter!(coordinates[:, 1], coordinates[:, 2], ms=(sizes ./ 25), mc=color)
     display(plot)
     if save
         save_plot(save_path)
