@@ -12,7 +12,7 @@ include("methods/improved.jl")
 # Display
 include("display.jl")
 # Functions
-export load_data, check_params, movements
+export load_data, load_network, check_params, movements, plot_network, plot_points
 # Structures
 export GravClustering, BruteForce, BruteForceCuda 
 
@@ -36,7 +36,5 @@ function display_test()
     # plot_points(mat, sizes)
     return
 end
-
-display_test()
 
 end
