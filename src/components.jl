@@ -1,4 +1,4 @@
-import XML: Node, children, tag
+import XML: Node, children, tag, attributes
 
 struct Edge
     id::String
@@ -68,6 +68,7 @@ function get_centroid(edge::Edge)::Tuple{Float64, Float64}
             y_sum += y
         end
         divider += length(lane_shape)
+        break
     end
     return (x_sum / divider), (y_sum / divider)
 end
