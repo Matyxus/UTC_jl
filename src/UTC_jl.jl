@@ -8,25 +8,11 @@ include("network.jl")
 include("grav_clustering.jl")
 include("solver.jl")
 include("methods/brute_force.jl")
+include("methods/improved.jl")
 # Display
 include("display.jl")
-
-function clustering_test()
-    gc::GravClustering = load_data("lust", "edgedata_lust", (25200, 32400), Float64)
-    gc.weights .+= 0.001
-    gc.weights .*= gc.params["multiplier"]
-    @assert(check_params(gc))
-    solver::BruteForce = BruteForce(gc)
-    # plot_points(gc.positions, gc.weights)
-    for i in 1:100
-        println("----- Iteration: $(i), clusters: $(size(gc.positions, 1)) -----")
-        step(gc, solver)
-        if i % 10 == 0
-            plot_points(gc.positions, gc.weights)
-        end
-    end
-    return
-end
+# Benchmarks
+include("clustering_bech.jl")
 
 function display_test()
     network = load_network("DCC")
@@ -39,6 +25,10 @@ function display_test()
     return
 end
 
-clustering_test()
+
+
+# brute_test_naive()
+
+export GravClustering, load_data, BruteForce, movements, movements2, movements3
 
 end

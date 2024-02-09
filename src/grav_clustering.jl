@@ -30,7 +30,7 @@ function check_params(gc::GravClustering)::Bool
         end
     end
     if !allunique(eachrow(gc.positions))
-        println("Dectected duplicates among coordinates of points!")
+        println("Detected duplicates among coordinates of points!")
         return false
     end
     return true

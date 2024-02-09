@@ -82,7 +82,6 @@ function get_centroids(network::Network, ::Type{T})::Matrix{T} where {T <: Abstr
     correct::Vector{Int64} = unique(i -> positions[i, :], axes(positions, 1))
     if length(correct) != size(positions, 1)
         println("Warning, detected: $(size(positions)[1] - length(correct)) duplicate coordinates, correcting ...")
-
     end
     return positions
 end
