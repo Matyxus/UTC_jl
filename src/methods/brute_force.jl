@@ -8,28 +8,26 @@ end
 
 function step(gc::GravClustering, solver::BruteForce)::Nothing
     println("Applying step of BruteForce on clustering")
-    movements(gc, solver)
-    clusterize(gc, solver, gc.params["merging_radius"] ^ 2)
+    # movements(gc, solver)
+    # clusterize(gc, solver, gc.params["merging_radius"] ^ 2)
 	return
 end
 
-function movements(gc::GravClustering, ::BruteForce)::Nothing
-    println("Calculating movements of clusters by BruteForce")
-    # ------------------ Calculate movement of points based on grav. attraction ------------------
-    movements::Matrix{gc.precision} = zeros(size(gc.positions))
+
+function movements(gc::GravClustering, ::BruteForce)::Matrix
+    movements::Matrix{gc.precision} = zeros(gc.precision, size(gc.positions))
     for i in axes(movements, 1)
         distances::Vector{gc.precision} = vec(sum(((gc.positions .- transpose(gc.positions[i, :])) .^ 2), dims=2))
         distances[i] = 1.0
         @assert(!(gc.precision(0) in distances))
         attraction::Vector{gc.precision} = gc.weights ./ distances
-        movements[i, :] = vec(sum(transpose((gc.positions .- transpose(gc.positions[i, :])) .* attraction), dims=2))
+        movements[i, :] = round.(vec(sum(((gc.positions .- transpose(gc.positions[i, :])) .* attraction), dims=1)); digits=5)
     end
-    gc.positions += movements
-    return
+    return movements
 end
 
 
-function clusterize(gc::GravClustering, solver::BruteForce, radius::Real)
+function clusterize(gc::GravClustering, solver::BruteForce, radius::Real)::Nothing
     println("Clusterings by BruteForce, total points: $(size(gc.positions, 1)), radius: $(radius)")
 	@assert(length(unique(solver.indexes)) == length(solver.indexes) == size(gc.positions, 1))
 	@assert(issorted(solver.indexes))
@@ -73,6 +71,8 @@ function clusterize(gc::GravClustering, solver::BruteForce, radius::Real)
 		@assert(issorted(solver.indexes))
 		index += 1
 	end
+    println("Clusterers after: $(size(gc.positions, 1))")
+    return
 end
 
 
