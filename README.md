@@ -36,6 +36,9 @@
         <li><a href="#visualization">Visualization</a></li>
       </ul>
     </li>
+    <li>
+      <a href="#references">References</a>
+    </li>
   </ol>
 </details>
 
@@ -78,7 +81,7 @@ The main feature of this work is the "gravitational" clustering algorithm. The g
 
 2) Clustering (original): The initial algorithm (based on the python implementation) perform while loop on the matrix of points and for each point computs the destination against all others. All points that have distance lesser than that of radius are considered as being "absorbed" by the current point. The current point (or one of the others, depending on the maximal weight) becomes the cluster leader and is moved to the center of gravity of all of these points. Clusters are merged together (all points are initially in the their own cluster) and the new cluster also increases its own weight as the total sum of absorbed points / clusters, which are then removed from the point matrix. 
 
-2) Clustering (new): The usual approach to such problem (especially in physics simulators) is to smartly partition the space, so that we do not need to compare the distance against all other points. In this work, it is done by simple uniform grid, in a way that guarantees, that 3x3 grid radius is searched at most for given grid cell. This is done by performing counting sort on pair of coordinates and their grid cells (sorting by cell id), then mapping the grid cell id to the starting index of the sorted array, where the grid cell can be first found. Constructing the grid is not hard, as the bounding box can be found in parallel, and the counting sort runs pretty much in linear time, ofcourse the space requirement is not optimal, as we need output array and the array for the grid paritioning, that can have large size, depending on the given radius and highest/lowest coordinates. The merging is done in similar way, however the cells which are in the same cell are only visited once, this leads to a bit different merging process, however if the given weights are not too large (points are not moving too much) it does even out with the original implementation eventually. 
+2) Clustering (new): The usual approach to such problem (especially in physics simulators) is to smartly [partition](https://en.wikipedia.org/wiki/Space_partitioning) the space, so that we do not need to compare the distance against all other points. In this work, it is done by simple uniform grid, in a way that guarantees, that 3x3 grid radius is searched at most for given grid cell. This is done by performing counting sort on pair of coordinates and their grid cells (sorting by cell id), then mapping the grid cell id to the starting index of the sorted array, where the grid cell can be first found. Constructing the grid is not hard, as the bounding box can be found in parallel, and the counting sort runs pretty much in linear time, ofcourse the space requirement is not optimal, as we need output array and the array for the grid paritioning, that can have large size, depending on the given radius and highest/lowest coordinates. The merging is done in similar way, however the cells which are in the same cell are only visited once, this leads to a bit different merging process, however if the given weights are not too large (points are not moving too much) it does even out with the original implementation eventually. 
 
 <!-- USAGE EXAMPLES -->
 ## Usage
@@ -93,5 +96,11 @@ Second one for visualization of congestion indexes (extracted by SUMO in statist
 
 
 Finally the visualization of clustering (which can be shown as points, or as clusters):
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+## References
+1) [FAST FIXED-RADIUS NEAREST NEIGHBORS](https://on-demand.gputechconf.com/gtc/2014/presentations/S4117-fast-fixed-radius-nearest-neighbor-gpu.pdf)
+2) [Particle Simulation using CUDA](https://developer.download.nvidia.com/assets/cuda/files/particles.pdf)
 
 <p align="right">(<a href="#top">back to top</a>)</p>

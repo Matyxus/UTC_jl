@@ -145,6 +145,14 @@ struct Improved <: Solver
 end
 
 
+function step(gc::GravClustering{T}, solver::Improved)::Nothing where {T <: AbstractFloat}
+    println("Applying step of Improved on clustering")
+    gc.positions += movements(gc, solver)
+    clusterize(gc, solver)
+	return
+end
+
+
 # 18.728 ms (5818 allocations: 545.94 KiB) - 6 threads
 function movements(gc::GravClustering{T}, ::Improved)::Matrix{T} where {T <: AbstractFloat}
     movements::Matrix{T} = zeros(T, size(gc.positions))
@@ -177,7 +185,7 @@ end
 function clusterize(gc::GravClustering, solver::Improved)::Nothing
     println("Clusterings by Improved, total points: $(size(gc.positions, 1)), radius: $(gc.params["merging_radius"])")
     # ------------------ Grid ------------------
-    println("Generating grid ...")
+    println("Generating grid paritioning ...")
     radius::Real = gc.params["merging_radius"]
     grid::Grid = construct_grid(gc.positions, radius)
     moves::Vector{Int32} = [1, -1, grid.grid_size_y, -grid.grid_size_y, grid.grid_size_y+1, grid.grid_size_y-1, -grid.grid_size_y+1, -grid.grid_size_y-1]
