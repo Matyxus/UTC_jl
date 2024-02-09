@@ -42,7 +42,7 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-This project is a semestral task for Julia language subject. The project contains the initial implementation of working with simulator SUMO networks and clustering algorithm to find "problematic" (highly congested) sub-regions inside the network. It functions as trial for comparing the python implementation (it is based off), its speed and functionality vs that of Julia's.
+This project is a semestral task for Julia language. The project contains the initial implementation of working with simulator SUMO networks and clustering algorithm to find "problematic" (highly congested) sub-regions inside the network. It functions as trial / comparison against the original python implementation, it is compared in terms of speed and functionality.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
