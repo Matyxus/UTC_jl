@@ -131,7 +131,12 @@ The main feature of this work is the "gravitational" clustering algorithm. The g
 <!-- USAGE EXAMPLES -->
 ## Usage
 ### Description
+General usage is done by first loading the appropriate network, which should be placed inside [data](https://github.com/Matyxus/UTC_jl/tree/main/data) folder, similary for the statistics file. For this reason function "load_data" is defined, which takes both of these arguments to produce structure called GravitationalClustering, which holds all the necessarry data (positions, weights, ...). Then function called "run_clustering" is defind, which performs iterations based on the given algorithm. Clusters can then be visualized on the entire network. 
+
+
 ### Example
+Examples of how to use the project and benchmars are in the [scripts](https://github.com/Matyxus/UTC_jl/tree/main/scripts) folder.
+
 ### Visualization
 There are multiple visualization methods provided for this work, 
 first one being the plotting of networks in the SUMO format:

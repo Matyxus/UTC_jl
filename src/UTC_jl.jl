@@ -3,18 +3,19 @@ module UTC_jl
 include("constants.jl")
 include("components.jl")
 include("network.jl")
+# Display
+include("display.jl")
 # Clustering
 include("grav_clustering.jl")
 include("solver.jl")
 include("methods/brute_force.jl")
 include("methods/brute_force_cuda.jl")
 include("methods/improved.jl")
-# Display
-include("display.jl")
+
 # Functions
-export load_data, load_network, check_params, movements, plot_network, plot_points
+export load_data, load_network, check_params, movements, plot_network, plot_points, run_clustering
 # Structures
-export GravClustering, BruteForce, BruteForceCuda 
+export GravClustering, BruteForce, BruteForceCuda, Improved 
 
 function cuda_test()
     clustering::GravClustering = load_data("lust", "edgedata_lust", (0, 3600), Float32)
@@ -27,19 +28,13 @@ function cuda_test()
 end
 
 function clustering_test()
-    gc::GravClustering = load_data("lust", "edgedata_lust", (25200, 32400), Float64)
+    gc::GravClustering = load_data("DCC", "edgedata_dcc", (25200, 32400), Float64)
     gc.weights .+= 0.001
     gc.weights .*= gc.params["multiplier"]
     @assert(check_params(gc))
     solver::Improved = Improved(gc)
-    plot_points(gc.positions, gc.weights)
-    for i in 1:200 
-        println("------ Iteration: $(i)/200 ------")
-        step(gc, solver)
-        if i % 10 == 0
-            plot_points(gc.positions, gc.weights)
-        end
-    end
+    run_clustering(gc, solver; iterations=50)
+    
 end
 
 function display_test()

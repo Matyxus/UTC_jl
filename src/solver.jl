@@ -53,14 +53,14 @@ clusterize(::GravClustering, solver::T) where T <: Solver = throw(ErrorException
 
 `Returns` Nothing or matrix of positions (movements)
 """
-function run(gc::GravClustering, solver::T; iterations::Int64=100, plot_every::Int64=5)::Nothing where T <: Solver
-    println("Running clustering for: $(iterations) iterations, on solver: $(nameof(solver)) !")
+function run_clustering(gc::GravClustering, solver::T; iterations::Int64=100, plot_every::Int64=5)::Nothing where T <: Solver
+    println("Running clustering for: $(iterations) iterations!")
     if plot_every > 0
         plot_points(gc.positions, gc.weights)
     end
     for i in 1:iterations
         step(gc, solver)
-        if i % plot_every == 0
+        if plot_every > 0 && i % plot_every == 0
             plot_points(gc.positions, gc.weights)
         end
     end
