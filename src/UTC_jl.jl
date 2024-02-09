@@ -13,7 +13,7 @@ include("methods/brute_force_cuda.jl")
 include("methods/improved.jl")
 
 # Functions
-export load_data, load_network, check_params, movements, plot_network, plot_points, run_clustering, get_clusters
+export load_data, load_network, check_params, movements, plot_network, plot_points, plot_clusters, run_clustering, get_clusters
 # Structures
 export GravClustering, BruteForce, BruteForceCuda, Improved 
 
