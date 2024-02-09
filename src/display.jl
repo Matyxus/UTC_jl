@@ -194,3 +194,47 @@ function plot_points(
     end
     return true
 end
+
+"""
+    function plot_clusters(network::Network, clusters::Vector{Vector{Int64}}, cluster_min_size::Int64; junction_color::String=JUNCTION_COLOR, junction_size::Int64=JUNCTION_SIZE, save::Bool=false, save_path::String="", plot_title::String=network.name, background::String=BACKGROUND)
+
+    Plots given network with some options, where edges in same cluster (that has length at least `cluster_min_size`) have same unique color.
+
+# Arguments
+- `network::Network`: network to be plotted
+- `clusters::Vector{Vector{Int64}}`: vector of clusters, where each cluster has edge indexes
+- `cluster_min_size::Int64`: clusters with length greater or equal to `cluster_min_size` get unique color
+- `junction_color::Union{Vector{String}, String}`: colors of plotted junctions, expected vector length: `n`, `optional`
+- `junction_size::Union{Vector{Int64}, Int64}`: sizes of plotted junctions, expected vector length: `n`, `optional`
+- `save::Bool`: save plot, `optional`
+- `save_path::String`: location of saved plot, `optional`
+- `plot_title::String`: title of plot, `optional`
+- `background::String`: background color of plot, `optional`
+
+`Returns` Nothing
+"""
+function plot_clusters(
+        network::Network, clusters::Vector{Vector{Int64}}, cluster_min_size::Int64; 
+        junction_color::String=JUNCTION_COLOR, junction_size::Int64=JUNCTION_SIZE, 
+        save::Bool=false, save_path::String="", plot_title::String=network.name, background::String=BACKGROUND
+    )
+    edge_color::Vector{RGBA{Float64}} = fill(cgrad(:grays)[0.1], network.edges_size)
+    c = cgrad(:default)
+    chosen_clusters::Vector{Vector{Int64}} = []
+    for cluster in clusters
+        if length(cluster) >= cluster_min_size
+            push!(chosen_clusters, cluster)
+        end
+    end
+    for (index, cluster) in enumerate(chosen_clusters)
+        edge_color[cluster] .= c[index / length(chosen_clusters)]
+    end
+    plot = Plots.plot(background=background, size=PLOT_SIZE, fontfamily=FONT, plot_title=plot_title)
+    plot_edges(network.edges, network.edges_size, edge_color=edge_color)
+    plot_junctions(network.junctions, network.junctions_size, junction_color=junction_color, junction_size=junction_size)
+    display(plot)
+    if save
+        save_plot(save_path, network.name)
+    end
+    return
+end

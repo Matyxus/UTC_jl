@@ -27,14 +27,30 @@ function cuda_test()
 end
 
 function display_test()
-    network = load_network("DCC")
+    network::Network = load_network("DCC")
+    cluster_size = ceil(network.edges_size / 10)
+    last_cluster_size = network.edges_size % 10
+
+    clusters::Vector{Vector{Int64}} = fill([], 10)
+    for cluster_index in 1:9
+        for edge_index in 1:cluster_size
+            push!(clusters[cluster_index], (cluster_index - 1) * cluster_size + edge_index)
+        end
+    end
+    for edge_index in 1:last_cluster_size
+        push!(clusters[10], 9 * cluster_size + edge_index)
+    end
+
+    plot_clusters(network, clusters, 0)
     # c = cgrad(:Reds)
     # r = rand(network.edges_size)
-    plot_network(network)
+    # plot_network(network)
     # mat = 10 * rand(100, 2)
     # sizes = 20 * rand(100) .+ 3
     # plot_points(mat, sizes)
     return
 end
+
+display_test()
 
 end
