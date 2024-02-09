@@ -85,5 +85,5 @@ function clusterize(gc::GravClustering, solver::BruteForce, radius::Real)::Nothi
 end
 
 
-
+get_clusters(solver::BruteForce)::Vector{Vector{Integer}} = collect(values(solver.clusters))
 

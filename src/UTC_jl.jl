@@ -3,18 +3,19 @@ module UTC_jl
 include("constants.jl")
 include("components.jl")
 include("network.jl")
+# Display
+include("display.jl")
 # Clustering
 include("grav_clustering.jl")
 include("solver.jl")
 include("methods/brute_force.jl")
 include("methods/brute_force_cuda.jl")
 include("methods/improved.jl")
-# Display
-include("display.jl")
+
 # Functions
-export load_data, load_network, check_params, movements, plot_network, plot_points
+export load_data, load_network, check_params, movements, plot_network, plot_points, run_clustering, get_clusters
 # Structures
-export GravClustering, BruteForce, BruteForceCuda 
+export GravClustering, BruteForce, BruteForceCuda, Improved 
 
 function cuda_test()
     clustering::GravClustering = load_data("lust", "edgedata_lust", (0, 3600), Float32)
@@ -24,6 +25,16 @@ function cuda_test()
     solver::BruteForceCuda = BruteForceCuda(clustering)
     step(clustering, solver)
     return
+end
+
+function clustering_test()
+    gc::GravClustering = load_data("DCC", "edgedata_dcc", (25200, 32400), Float64)
+    gc.weights .+= 0.001
+    gc.weights .*= gc.params["multiplier"]
+    @assert(check_params(gc))
+    solver::Improved = Improved(gc)
+    run_clustering(gc, solver; iterations=10)
+    
 end
 
 function display_test()
@@ -51,6 +62,6 @@ function display_test()
     return
 end
 
-display_test()
+clustering_test()
 
 end

@@ -40,6 +40,44 @@ movements(::GravClustering, solver::T) where T <: Solver = throw(ErrorException(
 """
 clusterize(::GravClustering, solver::T) where T <: Solver = throw(ErrorException("Error, function 'clusterize' for Solver: $(nameof(solver)) is not implemented!"))
 
+"""
+    run(gc::GravClustering, solver::T; iterations::Int64=100, plot_every::Int64=5)::Nothing
+
+    Performs an entire run of gravtiational sorting, given algorithm.
+
+# Arguments
+- `gc::GravClustering`: gravitational clustering structure.
+- `solver::T`: algorithm that performs clustering
+- `iterations::Int64`: total number of iterations (optional, 100 by default)
+- `plot_every::Int64`: how often should points be visualized (default 5)
+
+`Returns` Nothing or matrix of positions (movements)
+"""
+function run_clustering(gc::GravClustering, solver::T; iterations::Int64=100, plot_every::Int64=5)::Nothing where T <: Solver
+    println("Running clustering for: $(iterations) iterations!")
+    if plot_every > 0
+        plot_points(gc.positions, gc.weights)
+    end
+    for i in 1:iterations
+        step(gc, solver)
+        if plot_every > 0 && i % plot_every == 0
+            plot_points(gc.positions, gc.weights)
+        end
+    end
+    return
+end
 
 
+
+"""
+    get_clusters(<: Solver)::Vector{Vector{Integer}}
+
+    Generates lists of all clusters.
+
+# Arguments
+- `solver::T`: algorithm that performs clustering
+
+`Returns` Vector of clusters of edge internal indexes.
+"""
+get_clusters(::T) where {T <: Solver} = throw(ErrorException("Error, function 'get_clusters' for Solver is not implemented!"))
 
