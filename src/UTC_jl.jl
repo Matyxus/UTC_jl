@@ -1,5 +1,4 @@
 module UTC_jl
-using BenchmarkTools
 # Base
 include("constants.jl")
 include("components.jl")
