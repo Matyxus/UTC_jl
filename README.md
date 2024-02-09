@@ -104,3 +104,35 @@ Finally the visualization of clustering (which can be shown as points, or as clu
 2) [Particle Simulation using CUDA](https://developer.download.nvidia.com/assets/cuda/files/particles.pdf)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
+
+## CUDA Benchmarks
+<table>
+  <thead>
+      <tr>
+          <th></th>
+          <th>Classic for cycle</th>
+          <th>Classic for cycle with diff save</th>
+          <th>Vectorized</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>non-CUDA</td>
+          <td><strong>151.924 ms</strong> (112767 allocations: 843.90 MiB)</td>
+          <td><strong>230.574 ms</strong> (119400 allocations: 1.15 GiB)</td>
+          <td><strong>706.795 ms</strong> (34 allocations: 1.31 GiB)</td>
+      </tr>
+      <tr>
+          <td>CUDA with scalar indexing</td>
+          <td><strong>1.718 s</strong> (1742058 allocations: 80.88 MiB)</td>
+          <td><strong>1.682 s</strong> (1745740 allocations: 78.27 MiB)</td>
+          <td><strong>536.556 ms</strong> (7194 allocations: 715.34 KiB)</td>
+      </tr>
+      <tr>
+          <td>CUDA with bool indexing</td>
+          <td><strong>1.806 s</strong> (2011188 allocations: 134.55 MiB)</td>
+          <td><strong>1.908 s</strong> (1963944 allocations: 130.14 MiB)</td>
+          <td><strong>84.939 ms</strong> (231 allocations: 42.27 MiB)</td>
+      </tr>
+  </tbody>
+</table>
