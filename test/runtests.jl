@@ -1,4 +1,5 @@
 using UTC_jl
+using UTC_jl.CUDA
 using Test
 
 function clustering_test()
@@ -22,5 +23,7 @@ function cuda_test()
 end
 
 @testset "UTC_jl.jl" begin
-    @test clustering_test() ≈ cuda_test()
+    if CUDA.functional()
+        @test clustering_test() ≈ cuda_test()
+    end
 end
