@@ -1,3 +1,4 @@
+using Base.Threads
 # -------------------------- Grid -------------------------- 
 """
     Uniform spatial paritioning structure for faster fixed-radius nearest neighbour search.
@@ -155,6 +156,7 @@ end
 
 # 18.728 ms (5818 allocations: 545.94 KiB) - 6 threads
 function movements(gc::GravClustering{T}, ::Improved)::Matrix{T} where {T <: AbstractFloat}
+    println("Computing movements on Improved algorithm")
     movements::Matrix{T} = zeros(T, size(gc.positions))
     num_points::Int32 = size(gc.positions, 1)
     @inbounds Threads.@threads for i in 1:num_points

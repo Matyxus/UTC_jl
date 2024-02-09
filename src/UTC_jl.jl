@@ -26,6 +26,22 @@ function cuda_test()
     return
 end
 
+function clustering_test()
+    gc::GravClustering = load_data("lust", "edgedata_lust", (25200, 32400), Float64)
+    gc.weights .+= 0.001
+    gc.weights .*= gc.params["multiplier"]
+    @assert(check_params(gc))
+    solver::Improved = Improved(gc)
+    plot_points(gc.positions, gc.weights)
+    for i in 1:200 
+        println("------ Iteration: $(i)/200 ------")
+        step(gc, solver)
+        if i % 10 == 0
+            plot_points(gc.positions, gc.weights)
+        end
+    end
+end
+
 function display_test()
     network = load_network("DCC")
     # c = cgrad(:Reds)
@@ -36,5 +52,7 @@ function display_test()
     # plot_points(mat, sizes)
     return
 end
+
+clustering_test()
 
 end

@@ -2,7 +2,18 @@ using UTC_jl
 using UTC_jl.BenchmarkTools
 
 
-function clustering_test()
+function clustering_test1()
+    println("Running clustering test")
+    gc::GravClustering = load_data("lust", "edgedata_lust", (25200, 32400), Float64)
+    gc.weights .+= 0.001
+    gc.weights .*= gc.params["multiplier"]
+    @assert(check_params(gc))
+    solver::BruteForce = BruteForce(gc)
+    println("Running benchmark on clusterize2 function")
+    return
+end
+
+function clustering_test2()
     println("Running clustering test")
     gc::GravClustering = load_data("lust", "edgedata_lust", (25200, 32400), Float64)
     gc.weights .+= 0.001
