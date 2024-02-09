@@ -110,21 +110,22 @@ function plot_junctions(
 end
 
 """
-    function save_plot(save_path::String="")
+    function save_plot(save_path::String="", file_name::String="plot")
 
     Saves plot.
 
 # Arguments
 - `save_path::String`: location of saved plot, `optional`
+- `file_name::String`: name of saved plot, `optional`
 
 `Returns` Nothing
 """
-function save_plot(save_path::String="")
+function save_plot(save_path::String="", file_name::String="plot")
     save_path = strip(save_path)
     if !isempty(save_path) && save_path[end] != SEP
         save_path *= SEP
     end
-    Plots.savefig(save_path * network.name * ".svg")
+    Plots.savefig(save_path * file_name * ".svg")
     return
 end
 
@@ -156,7 +157,7 @@ function plot_network(
     plot_junctions(network.junctions, network.junctions_size, junction_color=junction_color, junction_size=junction_size)
     display(plot)
     if save
-        save_plot(save_path)
+        save_plot(save_path, network.name)
     end
     return
 end
