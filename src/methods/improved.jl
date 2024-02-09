@@ -188,7 +188,7 @@ function clusterize(gc::GravClustering, solver::Improved)::Nothing
     grid_index::Int32, index::Int32 = 0, 0
     x::gc.precision, y::gc.precision = gc.precision(0), gc.precision(0)
     radius ^= 2
-    @inboudns for i in axes(gc.positions, 1)
+    @inbounds for i in axes(gc.positions, 1)
         if eaten[i] || visited[i]
             continue
         end

@@ -1,5 +1,5 @@
 module UTC_jl
-
+using BenchmarkTools
 # Base
 include("constants.jl")
 include("components.jl")
@@ -11,8 +11,6 @@ include("methods/brute_force.jl")
 include("methods/improved.jl")
 # Display
 include("display.jl")
-# Benchmarks
-include("clustering_bech.jl")
 
 function display_test()
     network = load_network("DCC")
@@ -25,9 +23,6 @@ function display_test()
     return
 end
 
-
-
-# brute_test_naive()
 
 export GravClustering, load_data, BruteForce, movements, movements2, movements3
 
