@@ -65,30 +65,31 @@ The inteded use of this project is mostly for demonstration purposes, however th
 1) [BenchmarkTools](https://github.com/djsegal/julia_packages)
 2) [XML](https://github.com/djsegal/julia_packages)
 3) [Plots](https://docs.juliaplots.org/latest/) 
-4) [CUDA](https://github.com/djsegal/julia_packages)
-4) [Random](https://github.com/djsegal/julia_packages)
+4) [RecipesBase](https://docs.juliaplots.org/latest/RecipesBase/) 
+5) [CUDA](https://github.com/djsegal/julia_packages)
+6) [Random](https://github.com/djsegal/julia_packages)
 
 ### Installation
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-Use [Pkg](https://docs.julialang.org/en/v1/stdlib/Pkg/) to install project from GitHub, or download the project and activate the enviroment inside root, then it can be used similary (Do not forget to install the required libraries or use "Pkg.initiaite()").
+Use [Pkg](https://docs.julialang.org/en/v1/stdlib/Pkg/) to install project from GitHub, or download the project and activate the enviroment inside root, then it can be used similary (Do not forget to install the required libraries or use `Pkg.initiaite()`).
 ```julia
 (env) pkg> add https://github.com/Matyxus/UTC_jl
 ```
 ** Note: If we wish to run clustering with multiple threads, start the
-julia interpreter with the option: "--threads=NUM".
+julia interpreter with the option: `--threads=NUM`.
 
 
 ## Algorithm
 <p align="right">(<a href="#top">back to top</a>)</p>
 The main feature of this work is the "gravitational" clustering algorithm. The goal of this algorithm, is to cluster points (in 2D space) given their positions, weights and radius (minimal distance between points) for merging. The implementation can be split into two pars:
 
-1) Calculation of movements: in this part, attraction between points is computed, it is done as each point against all others. The formula used is: "attraction = weights / distances (squared)". It has greate potential to be parallelized and/or computed quickly on GPU.
+1) Calculation of movements: in this part, attraction between points is computed, it is done as each point against all others. The formula used is: `attraction = weights / (distances)^2`. It has greate potential to be parallelized and/or computed quickly on GPU.
 
-2) Clustering (original): The initial algorithm (based on the python implementation) perform while loop on the matrix of points and for each point computs the destination against all others. All points that have distance lesser than that of radius are considered as being "absorbed" by the current point. The current point (or one of the others, depending on the maximal weight) becomes the cluster leader and is moved to the center of gravity of all of these points. Clusters are merged together (all points are initially in the their own cluster) and the new cluster also increases its own weight as the total sum of absorbed points / clusters, which are then removed from the point matrix. 
+2) Clustering (original): The initial algorithm (based on the python implementation) performs while loop on the matrix of points and for each point computes the destination against all others. All points that have distance lesser than that of radius are considered as being "absorbed" by the current point. The current point (or one of the others, depending on the maximal weight) becomes the cluster leader and is moved to the center of gravity of all of these points. Clusters are merged together (all points are initially in the their own cluster) and the new cluster also increases its own weight as the total sum of absorbed points / clusters, which are then removed from the point matrix. 
 
-2) Clustering (new): The usual approach to such problem (especially in physics simulators) is to smartly [partition](https://en.wikipedia.org/wiki/Space_partitioning) the space, so that we do not need to compare the distance against all other points. In this work, it is done by simple uniform grid, in a way that guarantees, that 3x3 grid radius is searched at most for given grid cell. This is done by performing counting sort on pair of coordinates and their grid cells (sorting by cell id), then mapping the grid cell id to the starting index of the sorted array, where the grid cell can be first found. Constructing the grid is not hard, as the bounding box can be found in parallel, and the counting sort runs pretty much in linear time, ofcourse the space requirement is not optimal, as we need output array and the array for the grid paritioning, that can have large size, depending on the given radius and highest/lowest coordinates. The merging is done in similar way, however the cells which are in the same cell are only visited once, this leads to a bit different merging process, however if the given weights are not too large (points are not moving too much) it does even out with the original implementation eventually. 
+2) Clustering (new): The usual approach to such problem (especially in physics simulators) is to smartly [partition](https://en.wikipedia.org/wiki/Space_partitioning) the space, so that we do not need to compare the distance against all other points. In this work, it is done by simple uniform grid, in a way that guarantees, that $3 \times 3$ grid radius is searched at most for given grid cell. This is done by performing counting sort on pair of coordinates and their grid cells (sorting by cell id), then mapping the grid cell id to the starting index of the sorted array, where the grid cell can be first found. Constructing the grid is not hard, as the bounding box can be found in parallel, and the counting sort runs pretty much in linear time, ofcourse the space requirement is not optimal, as we need output array and the array for the grid paritioning, that can have large size, depending on the given radius and highest/lowest coordinates. The merging is done in similar way, however the cells which are in the same cell are only visited once, this leads to a bit different merging process, however if the given weights are not too large (points are not moving too much) it does even out with the original implementation eventually. 
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -131,7 +132,7 @@ The main feature of this work is the "gravitational" clustering algorithm. The g
 <!-- USAGE EXAMPLES -->
 ## Usage
 ### Description
-General usage is done by first loading the appropriate network, which should be placed inside [data](https://github.com/Matyxus/UTC_jl/tree/main/data) folder, similary for the statistics file. For this reason function "load_data" is defined, which takes both of these arguments to produce structure called GravitationalClustering, which holds all the necessarry data (positions, weights, ...). Then function called "run_clustering" is defind, which performs iterations based on the given algorithm. Clusters can then be visualized on the entire network. 
+General usage is done by first loading the appropriate network, which should be placed inside [data](https://github.com/Matyxus/UTC_jl/tree/main/data) folder, similary for the statistics file. For this reason function `load_data()` is defined, which takes both of these arguments to produce structure called `GravitationalClustering`, which holds all the necessarry data (positions, weights, ...). Then function called `run_clustering()` is defined, which performs iterations based on the given algorithm. Clusters can then be visualized on the entire network. 
 
 
 ### Example
