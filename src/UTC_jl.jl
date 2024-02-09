@@ -23,6 +23,6 @@ function display_test()
 end
 
 
-export GravClustering, load_data, BruteForce, movements, movements2, movements3
+export GravClustering, load_data, BruteForce, movements
 
 end
