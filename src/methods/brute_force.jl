@@ -1,3 +1,12 @@
+"""
+	mutable struct BruteForce <: Solver
+
+    Structure representing the brute-force (naive) version of clustering on CPU.
+
+# Attributes
+- `clusters::Dict{Int32, Vector{Int32}}`: mapping of internal edge id to vector of internals edge ids
+- `indexes::Vector{Int32}`: mapping of internal edge id, to the current cluster (as clusters are decreasing in size)
+"""
 mutable struct BruteForce <: Solver
 	# Initially each point is its own cluster
 	clusters::Dict{Int32, Vector{Int32}}
@@ -8,8 +17,8 @@ end
 
 function step(gc::GravClustering, solver::BruteForce)::Nothing
     println("Applying step of BruteForce on clustering")
-    # movements(gc, solver)
-    # clusterize(gc, solver, gc.params["merging_radius"] ^ 2)
+    gc.positions += movements(gc, solver)
+    clusterize(gc, solver, gc.params["merging_radius"] ^ 2)
 	return
 end
 
