@@ -1,4 +1,16 @@
+"""
+    mutable struct GravClustering{T <: AbstractFloat}
 
+    Structure used for GravClustering algorithms, stores all the neccessary objcets.
+
+# Attributes
+- `positions::Matrix{T}`: Nx2 matrix of positions of all points
+- `weights::Vector{T}`: vector of weights of all points
+- `precision::Type{T}`: given precision (Float16/32/64)
+- `params::Dict`: dictionary of parameters (such as merging radius, number of iterations, etc.)
+
+`Returns` Pair of coordinates defined as center of mass (computed by all lane shapes of Edge).
+"""
 mutable struct GravClustering{T <: AbstractFloat}
     positions::Matrix{T} # Matrix of positions
     weights::Vector{T} # Weights of objects
@@ -11,6 +23,16 @@ mutable struct GravClustering{T <: AbstractFloat}
     GravClustering(positions::Matrix{T}, weights::Vector{T}, params::V) where {T <: AbstractFloat, V <: AbstractDict}  = new{T}(positions, weights, T, params)
 end
 
+"""
+    function check_params(gc::GravClustering)::Bool
+
+    Checks parameters of GravClustering structure.
+
+# Arguments
+- `gc::GravClustering`: GravClustering structure to be checked
+
+`Returns` True if all parameters of GravClustering are correct, False otherwise.
+"""
 function check_params(gc::GravClustering)::Bool
     # Check params
     for (key, type) in CLUSTERING_ATTRIBUTES
@@ -36,6 +58,20 @@ function check_params(gc::GravClustering)::Bool
     return true
 end
 
+"""
+    function load_intervals(edge_data::String, interval::Tuple{Real, Real})::Union{Nothing, Vector{Node}}
+
+    Loads interval nodes from the statistical XML file.
+
+# Arguments
+- `network::String`: name of road network file located in root/data/networks directory.
+- `edge_data::String`: name of EdgeData file located in root/data/additional directory.
+- `interval::Tuple{Real, Real}`: time interval (start, end) in second of intervals.
+- `precision::Type{T}`: precision to be used (Float16/32/64).
+- `params::Union{Dict, Nothing}`: parameters of GravClustering (optional)
+
+`Returns` Nothing if an error occurs, GravClustering structure with loaded data otherwiese.
+"""
 function load_data(network::String, edge_data::String, interval::Tuple{Real, Real}, precision::Type{T}; params::Union{Dict, Nothing} = nothing)::Union{GravClustering, Nothing} where T <: AbstractFloat
     graph::Network = load_network(network)
     if isnothing(graph)
@@ -59,7 +95,17 @@ function load_data(network::String, edge_data::String, interval::Tuple{Real, Rea
     return GravClustering(get_centroids(graph, precision), weights, (isnothing(params) || isempty(params)) ? CLUSTERING_DEFAULT : params)
 end
 
+"""
+    function load_intervals(edge_data::String, interval::Tuple{Real, Real})::Union{Nothing, Vector{Node}}
 
+    Loads interval nodes from the statistical XML file.
+
+# Arguments
+- `edge_data::String`: name of EdgeData file located in root/data/additional directory.
+- `interval::Tuple{Real, Real}`: time interval (start, end) in second of intervals.
+
+`Returns` Nothing if an error occurs, Vector of XML Nodes otherwise.
+"""
 function load_intervals(edge_data::String, interval::Tuple{Real, Real})::Union{Nothing, Vector{Node}}
     println("Loading edge data from: '$(edge_data)', interval: $(interval) ...")
     edge_data_path::String = get_edge_data_path(edge_data)
@@ -78,8 +124,3 @@ function load_intervals(edge_data::String, interval::Tuple{Real, Real})::Union{N
     end
     return intervals
 end
-
-
-
-
-

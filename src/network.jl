@@ -1,5 +1,19 @@
 import XML: read as xml_read
 
+"""
+    struct Edge
+
+    Structure representing an road network (of simulator SUMO representation) extracted from the network file.
+
+# Attributes
+- `name::String`: file name of the network
+- `edges_size::Int64`: total number of edges
+- `edges::Vector{Edge}`: vector containg all edges
+- `edge_map::Dict{String, Int64}`: mapping of edge's original id to internal
+- `junctions_size::Int64`: total number of junctions
+- `junctions::Vector{Edge}`: vector containg all junctions
+- `junction_map::Dict{String, Int64}`: mapping of junction's original id to internal
+"""
 struct Network
     name::String
     # Edges
@@ -37,7 +51,16 @@ struct Network
     end
 end
 
+"""
+    function load_network(network_name::String)::Union{Network, Nothing}
 
+    Loads road network from the statistical XML file.
+
+# Arguments
+- `network::String`: name of road network file located in root/data/networks directory.
+
+`Returns` Nothing if an error occurs, Network structure with loaded data otherwise.
+"""
 function load_network(network_name::String)::Union{Network, Nothing}
     network_path::String = get_network_path(network_name)
     if !file_exists(network_path)
@@ -73,6 +96,17 @@ function load_network(network_name::String)::Union{Network, Nothing}
     return Network(network_name, junctions, edges)
 end
 
+"""
+    function get_centroids(network::Network, ::Type{T})::Matrix{T} where {T <: AbstractFloat}
+
+    Generates matrix of positions, which are centers of mass of all edges.
+
+# Arguments
+- `network::Network`: road network structure
+- `::Type{T}`: precision to be used (Float16/32/64).
+
+`Returns` Nothing if an error occurs, position matrix otherwise.
+"""
 function get_centroids(network::Network, ::Type{T})::Matrix{T} where {T <: AbstractFloat}
     positions::Matrix{T} = zeros(network.edges_size, 2)
     for edge in network.edges 
@@ -89,7 +123,17 @@ function get_centroids(network::Network, ::Type{T})::Matrix{T} where {T <: Abstr
     return positions
 end
 
-function duplicates(matrix::Matrix{T}) where T
+"""
+    function duplicates(matrix::Matrix{T})::Vector{Int64} where {T <: AbstractFloat}
+
+    Find duplicates in the positions matrix.
+
+# Arguments
+- `matrix::Matrix{T}`: matrix of positions
+
+`Returns` Vector of indexes, which are duplicated
+"""
+function duplicates(matrix::Matrix{T})::Vector{Int64} where {T <: AbstractFloat}
     uniqueset = Set{Vector{T}}()
     duplicated = Vector{Int64}()
     for row_index in axes(matrix, 1)
