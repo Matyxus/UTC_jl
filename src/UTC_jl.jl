@@ -28,14 +28,18 @@ function cuda_test()
 end
 
 function clustering_test()
+    network::Network = load_network("DCC")
     gc::GravClustering = load_data("DCC", "edgedata_dcc", (25200, 32400), Float64)
     gc.weights .+= 0.001
     gc.weights .*= gc.params["multiplier"]
     @assert(check_params(gc))
     solver::Improved = Improved(gc)
-    run_clustering(gc, solver; iterations=10)
-    
+    run_clustering(gc, solver; iterations=50)
+    println("Max size: $(maximum(length.(get_clusters(solver))))")
+    plot_clusters(network, get_clusters(solver), 30)
 end
+
+
 
 function display_test()
     network::Network = load_network("DCC")
@@ -62,6 +66,7 @@ function display_test()
     return
 end
 
-clustering_test()
+
+
 
 end
