@@ -29,6 +29,13 @@
       <a href="#algorithms">Algorithm</a>
     </li>
     <li>
+      <a href="#benchmarks">Benchmarks</a>
+      <ul>
+        <li><a href="#cuda">CUDA</a></li>
+        <li><a href="#cpu">CPU</a></li>
+      </ul>
+    </li>
+    <li>
       <a href="#usage">Usage</a>
       <ul>
         <li><a href="#description">Description</a></li>
@@ -72,7 +79,7 @@ Use [Pkg](https://docs.julialang.org/en/v1/stdlib/Pkg/) to install project from 
 ** Note: If we wish to run clustering with multiple threads, start the
 julia interpreter with the option: "--threads=NUM".
 
-<!-- Scenario -->
+
 ## Algorithm
 <p align="right">(<a href="#top">back to top</a>)</p>
 The main feature of this work is the "gravitational" clustering algorithm. The goal of this algorithm, is to cluster points (in 2D space) given their positions, weights and radius (minimal distance between points) for merging. The implementation can be split into two pars:
@@ -83,32 +90,11 @@ The main feature of this work is the "gravitational" clustering algorithm. The g
 
 2) Clustering (new): The usual approach to such problem (especially in physics simulators) is to smartly [partition](https://en.wikipedia.org/wiki/Space_partitioning) the space, so that we do not need to compare the distance against all other points. In this work, it is done by simple uniform grid, in a way that guarantees, that 3x3 grid radius is searched at most for given grid cell. This is done by performing counting sort on pair of coordinates and their grid cells (sorting by cell id), then mapping the grid cell id to the starting index of the sorted array, where the grid cell can be first found. Constructing the grid is not hard, as the bounding box can be found in parallel, and the counting sort runs pretty much in linear time, ofcourse the space requirement is not optimal, as we need output array and the array for the grid paritioning, that can have large size, depending on the given radius and highest/lowest coordinates. The merging is done in similar way, however the cells which are in the same cell are only visited once, this leads to a bit different merging process, however if the given weights are not too large (points are not moving too much) it does even out with the original implementation eventually. 
 
-<!-- USAGE EXAMPLES -->
-## Usage
-### Description
-### Example
-### Visualization
-There are multiple visualization methods provided for this work, 
-first one being the plotting of networks in the SUMO format:
-![Road network Image](images/dcc.svg)
-
-Second one for visualization of congestion indexes (extracted by SUMO in statistical files):
-![Heatmap](images/heatmap_dcc.svg)
-** The more red the edge is, the more congestion was observed there.
-
-
-Finally the visualization of clustering (which can be shown as points, or as clusters):
-![Points](images/points_dcc.svg)
-
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-## References
-1) [FAST FIXED-RADIUS NEAREST NEIGHBORS](https://on-demand.gputechconf.com/gtc/2014/presentations/S4117-fast-fixed-radius-nearest-neighbor-gpu.pdf)
-2) [Particle Simulation using CUDA](https://developer.download.nvidia.com/assets/cuda/files/particles.pdf)
+## Benchmarks
 
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-## CUDA Benchmarks
+### CUDA
 <table>
   <thead>
       <tr>
@@ -139,3 +125,31 @@ Finally the visualization of clustering (which can be shown as points, or as clu
       </tr>
   </tbody>
 </table>
+
+### CPU
+
+<!-- USAGE EXAMPLES -->
+## Usage
+### Description
+### Example
+### Visualization
+There are multiple visualization methods provided for this work, 
+first one being the plotting of networks in the SUMO format:
+![Road network Image](images/dcc.svg)
+
+Second one for visualization of congestion indexes (extracted by SUMO in statistical files):
+![Heatmap](images/heatmap_dcc.svg)
+** The more red the edge is, the more congestion was observed there.
+
+
+Finally the visualization of clustering (which can be shown as points, or as clusters):
+![Points](images/points_dcc.svg)
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+## References
+1) [FAST FIXED-RADIUS NEAREST NEIGHBORS](https://on-demand.gputechconf.com/gtc/2014/presentations/S4117-fast-fixed-radius-nearest-neighbor-gpu.pdf)
+2) [Particle Simulation using CUDA](https://developer.download.nvidia.com/assets/cuda/files/particles.pdf)
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
